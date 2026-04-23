@@ -53,18 +53,17 @@ const path = require('path');
 
 // Serve Static Assets in Production
 if (process.env.NODE_ENV === 'production') {
-  const distPath = path.join(__dirname, '../dist');
-  console.log('Serving static files from:', distPath);
+  const distPath = path.resolve(__dirname, '..', 'dist');
+  console.log('SUCCESS: Serving static files from:', distPath);
   
   app.use(express.static(distPath));
 
   app.get('*', (req, res) => {
-    const indexPath = path.resolve(__dirname, '../', 'dist', 'index.html');
-    console.log('Redirecting to:', indexPath);
+    const indexPath = path.resolve(distPath, 'index.html');
     res.sendFile(indexPath);
   });
 } else {
-  console.log('Not in production mode (NODE_ENV is:', process.env.NODE_ENV, ')');
+  console.log('DEBUG: Not in production mode (NODE_ENV is:', process.env.NODE_ENV, ')');
 }
 
 const PORT = process.env.PORT || 5000;

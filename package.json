@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "start": "ls -R && cd backend && node server.js",
+    "start": "ls -d */ && cd backend && node server.js",
     "server": "cd backend && node server.js",
     "client": "vite",
     "build": "npm install --prefix backend && vite build",
