@@ -55,7 +55,7 @@ const path = require('path');
 if (process.env.NODE_ENV === 'production') {
   const distPath = path.resolve(__dirname, '..', 'dist');
   console.log('SUCCESS: Serving static files from:', distPath);
-  
+
   app.use(express.static(distPath));
 
   app.use((req, res) => {
