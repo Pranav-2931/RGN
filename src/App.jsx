@@ -248,9 +248,12 @@ const AuthPage = ({ mode, onLogin }) => {
 
     const endpoint = mode === 'login' ? '/api/login' : '/api/register'
     const payload = mode === 'login' ? { email: formData.email, password: formData.password } : formData
-
+    const fullUrl = `${API_URL}${endpoint}`
+    console.log('DEBUG: Fetching from:', fullUrl)
+    setStatus(`Connecting to: ${fullUrl}...`)
+    
     try {
-      const response = await fetch(`${API_URL}${endpoint}`, {
+      const response = await fetch(fullUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
