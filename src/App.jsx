@@ -248,7 +248,11 @@ const AuthPage = ({ mode, onLogin }) => {
 
     const endpoint = mode === 'login' ? '/api/login' : '/api/register'
     const payload = mode === 'login' ? { email: formData.email, password: formData.password } : formData
-    const fullUrl = `${API_URL}${endpoint}`
+    
+    // This ensures we don't get double slashes like //api/register
+    const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:5000'
+    const fullUrl = `${baseUrl}${endpoint}`
+    
     console.log('DEBUG: Fetching from:', fullUrl)
     setStatus(`Connecting to: ${fullUrl}...`)
     
