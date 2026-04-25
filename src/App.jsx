@@ -279,6 +279,7 @@ const KnightDetails = () => {
       role: 'KNIGHT',
       bgUrl: 'https://media1.tenor.com/m/5U2q39QDECEAAAAC/itoshi-rin-rin-itoshi.gif',
       theme: { primary: '#00ffff', secondary: '#0077be' }, // Cyan & Sea Blue
+      spotifyId: '01vCzM84c5JLSkG2iXC9VZ',
       stats: [
         { label: 'Total Kills', value: '40,000+' },
         { label: 'Current Stage', value: '2 High Stable' },
@@ -337,8 +338,23 @@ const KnightDetails = () => {
               </div>
             ))}
           </div>
+
+          {knight.spotifyId && (
+            <div className="spotify-embed animate-fade-in-up" style={{ marginTop: '3rem', animationDelay: '1.2s' }}>
+              <iframe 
+                style={{ borderRadius: '12px' }} 
+                src={`https://open.spotify.com/embed/track/${knight.spotifyId}?utm_source=generator&theme=0`} 
+                width="100%" 
+                height="80" 
+                frameBorder="0" 
+                allowFullScreen="" 
+                allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture" 
+                loading="lazy"
+              ></iframe>
+            </div>
+          )}
           
-          <div className="animate-fade-in-up" style={{ marginTop: '8rem', animationDelay: '1.5s' }}>
+          <div className="animate-fade-in-up" style={{ marginTop: '4rem', animationDelay: '1.5s' }}>
             <Link to="/knights" className="btn-outline" style={{ 
               borderColor: knight.theme ? knight.theme.primary : '#fff',
               color: knight.theme ? knight.theme.primary : '#fff'
