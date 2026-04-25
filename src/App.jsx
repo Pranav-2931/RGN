@@ -32,6 +32,23 @@ const Footer = () => (
   </footer>
 )
 
+const MusicWidget = ({ song, artist }) => (
+  <div className="music-widget animate-fade-in-up" style={{ animationDelay: '2s' }}>
+    <div className="music-info">
+      <span className="music-song-name">{song}</span>
+      <span className="music-artist">{artist}</span>
+    </div>
+    <div className="volume-section">
+      <div className="volume-knob"></div>
+      <div className="volume-bars">
+        {[1, 2, 3, 4, 5].map(i => (
+          <div key={i} className={`volume-bar ${i <= 4 ? 'active' : ''}`} style={{ height: `${i * 2 + 4}px` }}></div>
+        ))}
+      </div>
+    </div>
+  </div>
+)
+
 // --- Pages ---
 
 const Home = ({ user }) => (
@@ -280,6 +297,8 @@ const KnightDetails = () => {
       bgUrl: 'https://media1.tenor.com/m/5U2q39QDECEAAAAC/itoshi-rin-rin-itoshi.gif',
       theme: { primary: '#00ffff', secondary: '#0077be' }, // Cyan & Sea Blue
       spotifyId: '01vCzM84c5JLSkG2iXC9VZ',
+      songName: 'WE ON GO',
+      artistName: 'BIA',
       stats: [
         { label: 'Total Kills', value: '40,000+' },
         { label: 'Current Stage', value: '2 High Stable' },
@@ -365,6 +384,8 @@ const KnightDetails = () => {
         </div>
         <div className="bg-decor-text" style={{ color: knight.theme ? `${knight.theme.primary}05` : 'rgba(255, 255, 255, 0.02)' }}>{knight.name}</div>
       </div>
+      
+      {knight.songName && <MusicWidget song={knight.songName} artist={knight.artistName} />}
     </section>
   )
 }
