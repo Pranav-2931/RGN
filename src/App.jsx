@@ -134,7 +134,8 @@ const Heroes = () => {
 
 const Knights = () => {
   const knights = [
-    { id: 'ryzen', name: 'Ryzen', role: 'E-Kitten' }
+    { id: 'ryzen', name: 'Ryzen', role: 'E-KITTEN' },
+    { id: 'dan', name: 'Dan', role: 'Knight' }
   ]
   return (
     <section id="knights" className="heroes-section" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>
@@ -271,6 +272,17 @@ const KnightDetails = () => {
         { label: 'Total Kills', value: '2000+' },
         { label: 'Current Stage', value: '2-Mid mobile stage' },
         { label: 'Potential', value: '2 high' }
+      ]
+    },
+    dan: {
+      name: 'DAN',
+      role: 'KNIGHT',
+      bgUrl: 'https://media1.tenor.com/m/5U2q39QDECEAAAAC/itoshi-rin-rin-itoshi.gif',
+      theme: { primary: '#00ffff', secondary: '#0077be' }, // Cyan & Sea Blue
+      stats: [
+        { label: 'Total Kills', value: '40,000+' },
+        { label: 'Current Stage', value: '2 High Stable' },
+        { label: 'Potential', value: '1 Low' }
       ]
     }
   }
