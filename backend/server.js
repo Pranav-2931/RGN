@@ -1,5 +1,6 @@
 const express = require('express');
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
@@ -59,7 +60,8 @@ app.get('/api/users', async (req, res) => {
 app.post('/api/register', async (req, res) => {
   try {
     const { gamertag, email, password } = req.body;
-    const newUser = new User({ gamertag, email, password });
+    const hashedPassword = await bcrypt.hash(password, 10);
+    const newUser = new User({ gamertag, email, password: hashedPassword });
     await newUser.save();
     res.status(201).json({ message: 'Hero Registered successfully' });
   } catch (err) {
@@ -70,8 +72,10 @@ app.post('/api/register', async (req, res) => {
 app.post('/api/login', async (req, res) => {
   try {
     const { email, password } = req.body;
-    const user = await User.findOne({ email, password });
+    const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Invalid Credentials' });
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) return res.status(400).json({ message: 'Invalid Credentials' });
     res.json({ message: 'Welcome back, Hero', user });
   } catch (err) {
     res.status(500).json({ error: err.message });
