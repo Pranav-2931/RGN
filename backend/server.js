@@ -39,6 +39,8 @@ app.get('/api/health', (req, res) => {
   res.json({
     status: state === 1 ? '✅ OK' : '❌ DOWN',
     database: states[state] || 'unknown',
+    dbName: mongoose.connection.name || 'N/A',
+    host: mongoose.connection.host || 'N/A',
     timestamp: new Date().toISOString()
   });
 });
