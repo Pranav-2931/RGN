@@ -12,9 +12,15 @@ app.use(cors());
 app.use(express.json());
 
 // MongoDB Connection
-mongoose.connect(process.env.MONGO_URI)
+const MONGO_URI = process.env.MONGO_URI;
+if (!MONGO_URI) {
+  console.error('❌ FATAL: MONGO_URI environment variable is not set. Check Render environment variables.');
+  process.exit(1);
+}
+
+mongoose.connect(MONGO_URI)
   .then(() => console.log('✅ RGN MongoDB Connected'))
-  .catch(err => console.error('❌ MongoDB Connection Error:', err));
+  .catch(err => console.error('❌ MongoDB Connection Error:', err.message));
 
 // Simple User Schema
 const userSchema = new mongoose.Schema({
@@ -25,6 +31,17 @@ const userSchema = new mongoose.Schema({
 });
 
 const User = mongoose.model('User', userSchema);
+
+// Health Check Route
+app.get('/api/health', (req, res) => {
+  const state = mongoose.connection.readyState;
+  const states = { 0: 'disconnected', 1: 'connected', 2: 'connecting', 3: 'disconnecting' };
+  res.json({
+    status: state === 1 ? '✅ OK' : '❌ DOWN',
+    database: states[state] || 'unknown',
+    timestamp: new Date().toISOString()
+  });
+});
 
 // Auth Routes
 app.post('/api/register', async (req, res) => {
