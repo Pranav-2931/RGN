@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom'
 const Knights = () => {
   const knights = [
     { id: 'ryzen', name: 'Ryzen', role: 'E-KITTEN' },
-    { id: 'dan', name: 'Dan', role: 'Knight' }
+    { id: 'dan', name: 'Dan', role: 'Knight' },
+    { id: 'aki', name: 'Aki', role: 'TSBCC Staff' }
   ]
   return (
     <section id="knights" className="heroes-section" style={{ minHeight: '80vh', display: 'flex', flexDirection: 'column', justifyContent: 'center' }}>

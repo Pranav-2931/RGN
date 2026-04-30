@@ -2,13 +2,15 @@ import { Link, useParams, Navigate } from 'react-router-dom'
 import MusicWidget from '../shared/MusicWidget'
 import ryzenData from '../knights/ryzen'
 import danData from '../knights/dan'
+import akiData from '../knights/aki'
 
 const KnightDetails = () => {
   const { id } = useParams()
 
   const knightData = {
     ryzen: ryzenData,
-    dan: danData
+    dan: danData,
+    aki: akiData
   }
 
   const knight = knightData[id]
