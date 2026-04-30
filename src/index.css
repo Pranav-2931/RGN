@@ -162,38 +162,33 @@ body, a, button {
   cursor: none !important; /* Hide default cursor */
 }
 
-.custom-cursor-main {
-  width: 8px;
-  height: 8px;
-  background: #fff;
-  border-radius: 50%;
+.custom-cursor-dot {
   position: fixed;
   pointer-events: none;
   z-index: 9999;
-  transform: translate(-50%, -50%);
-  transition: transform 0.1s ease-out;
-}
-
-.custom-cursor-trail {
-  width: 35px;
-  height: 35px;
-  background: rgba(255, 255, 255, 0.15);
-  border: 1px solid rgba(255, 255, 255, 0.3);
   border-radius: 50%;
-  position: fixed;
-  pointer-events: none;
-  z-index: 9998;
+  background: #fff;
   transform: translate(-50%, -50%);
-  box-shadow: 0 0 20px rgba(255, 255, 255, 0.1);
-  transition: width 0.3s, height 0.3s, background 0.3s;
 }
 
-/* Hover Effects */
-button:hover ~ .custom-cursor-trail,
-a:hover ~ .custom-cursor-trail {
-  width: 50px;
-  height: 50px;
-  background: rgba(255, 255, 255, 0.25);
+.custom-cursor-dot.main {
+  width: 6px;
+  height: 6px;
+  z-index: 10000;
+}
+
+.custom-cursor-dot.trail {
+  width: 10px;
+  height: 10px;
+  background: rgba(255, 255, 255, 0.4);
+  filter: blur(1px);
+}
+
+/* Hover Effects on Interactive Elements */
+a:hover ~ .custom-cursor-dot,
+button:hover ~ .custom-cursor-dot {
+  background: var(--primary);
+  box-shadow: 0 0 15px var(--primary-glow);
 }
 
 /* Background Decorative Lines */
