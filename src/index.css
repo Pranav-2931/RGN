@@ -139,17 +139,8 @@ h1, h2, h3, .brand {
   left: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover; /* Ensures img tag fits screen perfectly */
+  object-fit: cover;
   z-index: 0;
-  opacity: 0.9;
-}
-
-.hero-bg-overlay::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(circle, transparent 40%, #000 120%);
-  z-index: 1;
 }
 
 .hero-bg-overlay-default {
