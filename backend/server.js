@@ -45,6 +45,16 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Admin Route - Get all users (no passwords)
+app.get('/api/users', async (req, res) => {
+  try {
+    const users = await User.find({}, '-password');
+    res.json(users);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // Auth Routes
 app.post('/api/register', async (req, res) => {
   try {
