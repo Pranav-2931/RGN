@@ -1,7 +1,7 @@
 const akiData = {
   name: 'AKI',
   role: 'KNIGHT',
-  bgUrl: 'https://media1.tenor.com/m/Xf-E0Jv8p6AAAAAd/isagi-yoichi-isagi-nel.gif', // Direct gif link for the Isagi Two Gun Volley
+  bgUrl: 'https://media.tenor.com/Xf-E0Jv8p6AAAAAC/isagi-yoichi-isagi-nel.gif', // Updated direct link
   theme: { primary: '#4ade80', secondary: '#166534' }, // Green theme for Aki
   stats: [
     { label: 'Total Kills', value: '20,000+' },
