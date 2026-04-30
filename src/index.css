@@ -143,14 +143,14 @@ h1, h2, h3, .brand {
   background-position: center;
   background-repeat: no-repeat;
   z-index: -1;
-  filter: brightness(0.6);
+  opacity: 0.8;
 }
 
 .hero-bg-overlay::after {
   content: '';
   position: absolute;
   inset: 0;
-  background: radial-gradient(circle, transparent 20%, #000 100%);
+  background: radial-gradient(circle, transparent 40%, #000 120%);
 }
 
 .hero-bg-overlay-default {
