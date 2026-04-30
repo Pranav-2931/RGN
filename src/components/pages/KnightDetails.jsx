@@ -19,7 +19,7 @@ const KnightDetails = () => {
   return (
     <section className="hero-details-page animate-fade-in" style={{ minHeight: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '12vh 10%', position: 'relative' }}>
       {knight.bgUrl ? (
-        <div className="hero-bg-overlay" style={{ backgroundImage: `url(${knight.bgUrl})` }}></div>
+        <img src={knight.bgUrl} alt="" className="hero-bg-overlay" />
       ) : (
         <div className="hero-bg-overlay-default"></div>
       )}
