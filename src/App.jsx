@@ -5,6 +5,7 @@ import './App.css'
 // --- Shared Components ---
 import Navbar from './components/shared/Navbar'
 import Footer from './components/shared/Footer'
+import CustomCursor from './components/shared/CustomCursor'
 
 // --- Pages ---
 import Home from './components/pages/Home'
@@ -41,6 +42,7 @@ function App() {
   return (
     <Router>
       <div className="app-container">
+        <CustomCursor />
         <Navbar scrolled={scrolled} user={user} onLogout={handleLogout} />
         <Routes>
           <Route path="/" element={<Home user={user} />} />
