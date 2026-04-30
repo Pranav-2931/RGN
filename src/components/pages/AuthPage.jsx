@@ -12,21 +12,11 @@ const AuthPage = ({ mode, onLogin }) => {
     e.preventDefault()
     setStatus('Verifying Identity...')
 
-    if (formData.email === 'pranavrajkichu@gmail.com' && formData.password === 'nix2931') {
-      setStatus('SUCCESS: Welcome, Leader Nix')
-      onLogin({ gamertag: 'Nix', email: formData.email, role: 'Admin' })
-      setTimeout(() => navigate('/admin'), 1500)
-      return
-    }
-
     const endpoint = mode === 'login' ? '/api/login' : '/api/register'
     const payload = mode === 'login' ? { email: formData.email, password: formData.password } : formData
 
     const baseUrl = import.meta.env.PROD ? '' : 'http://localhost:5000'
     const fullUrl = `${baseUrl}${endpoint}`
-
-    console.log('DEBUG: Fetching from:', fullUrl)
-    setStatus(`Connecting to: ${fullUrl}...`)
 
     try {
       const response = await fetch(fullUrl, {
@@ -35,10 +25,19 @@ const AuthPage = ({ mode, onLogin }) => {
         body: JSON.stringify(payload)
       })
       const data = await response.json()
+      
       if (response.ok) {
         setStatus(`SUCCESS: ${data.message}`)
-        onLogin(data.user || { gamertag: formData.gamertag, email: formData.email, role: 'Member' })
-        setTimeout(() => navigate('/'), 1500)
+        
+        // Securely store the encrypted token
+        if (data.token) {
+          localStorage.setItem('rgn_token', data.token)
+        }
+        
+        onLogin(data.user)
+        
+        const target = data.user?.role === 'Admin' ? '/admin' : '/'
+        setTimeout(() => navigate(target), 1500)
       } else {
         setStatus(`ERROR: ${data.message || data.error}`)
       }
