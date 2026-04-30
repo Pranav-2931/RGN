@@ -19,7 +19,18 @@ const KnightDetails = () => {
   return (
     <section className="hero-details-page animate-fade-in" style={{ minHeight: '100vh', display: 'flex', alignItems: 'flex-start', justifyContent: 'flex-start', padding: '12vh 10%', position: 'relative' }}>
       {knight.bgUrl ? (
-        <img src={knight.bgUrl} alt="" className="hero-bg-overlay" />
+        knight.bgUrl.endsWith('.mp4') ? (
+          <video 
+            src={knight.bgUrl} 
+            autoPlay 
+            muted 
+            loop 
+            playsInline 
+            className="hero-bg-overlay video" 
+          />
+        ) : (
+          <img src={knight.bgUrl} alt="" className="hero-bg-overlay" />
+        )
       ) : (
         <div className="hero-bg-overlay-default"></div>
       )}

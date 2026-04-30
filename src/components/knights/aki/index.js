@@ -1,7 +1,7 @@
 const akiData = {
   name: 'AKI',
   role: 'KNIGHT',
-  bgUrl: 'https://media1.tenor.com/m/qzA9uKbNp4UAAAAC/isagi-yoichi-blue-lock.gif', // Official direct sharing link from Tenor
+  bgUrl: 'https://i.makeagif.com/media/6-26-2024/oA35Rb.mp4', // High-quality MP4 background
   theme: { primary: '#4ade80', secondary: '#166534' }, // Green theme for Aki
   stats: [
     { label: 'Total Kills', value: '20,000+' },

@@ -143,6 +143,10 @@ h1, h2, h3, .brand {
   z-index: 0;
 }
 
+.hero-bg-overlay.video {
+  transform: scale(1.05); /* Subtle zoom to crop watermarks */
+}
+
 .hero-bg-overlay-default {
   position: absolute;
   top: 0;
