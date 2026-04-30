@@ -1,6 +1,7 @@
 const express = require('express');
 const mongoose = require('mongoose');
 const bcrypt = require('bcryptjs');
+const jwt = require('jsonwebtoken');
 const cors = require('cors');
 const dotenv = require('dotenv');
 
@@ -74,9 +75,27 @@ app.post('/api/login', async (req, res) => {
     const { email, password } = req.body;
     const user = await User.findOne({ email });
     if (!user) return res.status(400).json({ message: 'Invalid Credentials' });
+    
     const match = await bcrypt.compare(password, user.password);
     if (!match) return res.status(400).json({ message: 'Invalid Credentials' });
-    res.json({ message: 'Welcome back, Hero', user });
+
+    // Create encrypted JWT token
+    const token = jwt.sign(
+      { id: user._id, role: user.role },
+      process.env.JWT_SECRET || 'fallback_secret', // Always set this in Render!
+      { expiresIn: '7d' }
+    );
+
+    res.json({ 
+      message: 'Welcome back, Hero', 
+      token,
+      user: {
+        id: user._id,
+        gamertag: user.gamertag,
+        email: user.email,
+        role: user.role
+      }
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
