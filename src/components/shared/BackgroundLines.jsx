@@ -14,20 +14,20 @@ const BackgroundLines = () => {
         <path 
           d="M-10,50 Q25,20 50,50 T110,50" 
           fill="none" 
-          stroke="rgba(255,255,255,0.03)" 
-          strokeWidth="0.5" 
+          stroke="rgba(255,255,255,0.06)" 
+          strokeWidth="0.8" 
         />
         <path 
           d="M-10,30 Q30,60 60,30 T110,30" 
           fill="none" 
-          stroke="rgba(255,255,255,0.02)" 
-          strokeWidth="0.3" 
+          stroke="rgba(255,255,255,0.04)" 
+          strokeWidth="0.5" 
         />
         <path 
           d="M-10,70 Q40,40 70,70 T110,70" 
           fill="none" 
-          stroke="rgba(255,255,255,0.02)" 
-          strokeWidth="0.4" 
+          stroke="rgba(255,255,255,0.05)" 
+          strokeWidth="0.6" 
         />
       </svg>
     </div>

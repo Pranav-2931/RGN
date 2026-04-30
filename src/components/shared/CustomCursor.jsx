@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react'
 
 const CustomCursor = () => {
   const [position, setPosition] = useState({ x: 0, y: 0 })
-  const dotsCount = 8
+  const dotsCount = 20 // Much longer trail
   const [trail, setTrail] = useState(new Array(dotsCount).fill({ x: 0, y: 0 }))
 
   useEffect(() => {
