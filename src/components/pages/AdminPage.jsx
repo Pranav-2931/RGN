@@ -2,8 +2,6 @@ import { Navigate } from 'react-router-dom'
 import { useEffect, useState } from 'react'
 
 const AdminPage = ({ user }) => {
-  if (!user || user.role !== 'Admin') return <Navigate to="/" />
-
   const [members, setMembers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
@@ -14,6 +12,8 @@ const AdminPage = ({ user }) => {
       .then(data => { setMembers(data); setLoading(false) })
       .catch(err => { setError(err.message); setLoading(false) })
   }, [])
+
+  if (!user || user.role !== 'Admin') return <Navigate to="/" />
 
   return (
     <section className="admin-page glass animate-fade-in" style={{ margin: '8rem 5%', padding: '3rem', minHeight: '60vh' }}>
