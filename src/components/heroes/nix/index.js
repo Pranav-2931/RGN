@@ -6,7 +6,9 @@ const nixData = {
   stats: [
     { label: 'Total Kills', value: '45,000+' },
     { label: 'TSBAH Stage', value: 'Official 2-High' },
-    { label: 'Current Objective', value: 'Going for 1 Low' }
+    { label: 'Current Objective', value: 'Going for 1 Low' },
+    { label: 'Asia Rank', value: 'Top 85' },
+    { label: 'India Rank', value: 'Top 38' }
   ]
 }
 
