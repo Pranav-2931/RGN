@@ -29,15 +29,15 @@ const AuthPage = ({ mode, onLogin }) => {
       if (response.ok) {
         setStatus(`SUCCESS: ${data.message}`)
         
-        // Securely store the encrypted token
-        if (data.token) {
-          localStorage.setItem('rgn_token', data.token)
+        if (mode === 'login') {
+          if (data.token) localStorage.setItem('rgn_token', data.token)
+          onLogin(data.user)
+          const target = data.user?.role === 'Admin' ? '/admin' : '/'
+          setTimeout(() => navigate(target), 1500)
+        } else {
+          // For signup, just redirect to login
+          setTimeout(() => navigate('/login'), 1500)
         }
-        
-        onLogin(data.user)
-        
-        const target = data.user?.role === 'Admin' ? '/admin' : '/'
-        setTimeout(() => navigate(target), 1500)
       } else {
         setStatus(`ERROR: ${data.message || data.error}`)
       }

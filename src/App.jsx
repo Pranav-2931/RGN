@@ -22,7 +22,14 @@ import AuthPage from './components/pages/AuthPage'
 
 function App() {
   const [scrolled, setScrolled] = useState(false)
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem('rgn_user')) || null)
+  const [user, setUser] = useState(() => {
+    try {
+      const item = localStorage.getItem('rgn_user')
+      return item && item !== 'undefined' ? JSON.parse(item) : null
+    } catch {
+      return null
+    }
+  })
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 50)
