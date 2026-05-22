@@ -45,59 +45,91 @@ if (process.env.SMTP_HOST && process.env.SMTP_USER && process.env.SMTP_PASS) {
 
 // Helper to send OTP email
 async function sendOTPEmail(email, otp) {
-  const mailOptions = {
-    from: process.env.SMTP_USER || '"Ragnarheim System" <noreply@ragnarheim.com>',
-    to: email,
-    subject: 'Ragnarheim Clan Initiation - Verify Identity',
-    html: `
-      <div style="background-color: #0b0c10; color: #c5c6c7; font-family: 'Courier New', Courier, monospace; padding: 30px; border-radius: 8px; border: 2px solid #1f2833; max-width: 600px; margin: auto;">
-        <h2 style="color: #66fcf1; text-align: center; border-bottom: 2px solid #1f2833; padding-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">Clan Initiation</h2>
-        <p style="font-size: 1.1em; line-height: 1.6; color: #c5c6c7;">Greetings, Hero.</p>
-        <p style="line-height: 1.6; color: #c5c6c7;">You have initiated request for entrance into the <strong>Ragnarheim System</strong>. To verify your identity and finalize your registration, use the following decrypted authentication key:</p>
-        <div style="background-color: #1f2833; border: 1px dashed #66fcf1; color: #66fcf1; font-size: 2em; font-weight: bold; text-align: center; padding: 15px; margin: 25px 0; border-radius: 4px; letter-spacing: 5px;">
-          ${otp}
-        </div>
-        <p style="font-size: 0.9em; color: #858585; line-height: 1.6;">This code is active for <strong>10 minutes</strong>. If you did not request this entrance, please ignore this transmission.</p>
-        <div style="text-align: center; margin-top: 30px; border-top: 2px solid #1f2833; padding-top: 15px; font-size: 0.8em; color: #666;">
-          Ragnarheim Security System // Sector 9
-        </div>
+  const subject = 'Ragnarheim Clan Initiation - Verify Identity';
+  const html = `
+    <div style="background-color: #0b0c10; color: #c5c6c7; font-family: 'Courier New', Courier, monospace; padding: 30px; border-radius: 8px; border: 2px solid #1f2833; max-width: 600px; margin: auto;">
+      <h2 style="color: #66fcf1; text-align: center; border-bottom: 2px solid #1f2833; padding-bottom: 15px; text-transform: uppercase; letter-spacing: 2px;">Clan Initiation</h2>
+      <p style="font-size: 1.1em; line-height: 1.6; color: #c5c6c7;">Greetings, Hero.</p>
+      <p style="line-height: 1.6; color: #c5c6c7;">You have initiated request for entrance into the <strong>Ragnarheim System</strong>. To verify your identity and finalize your registration, use the following decrypted authentication key:</p>
+      <div style="background-color: #1f2833; border: 1px dashed #66fcf1; color: #66fcf1; font-size: 2em; font-weight: bold; text-align: center; padding: 15px; margin: 25px 0; border-radius: 4px; letter-spacing: 5px;">
+        ${otp}
       </div>
-    `
-  };
+      <p style="font-size: 0.9em; color: #858585; line-height: 1.6;">This code is active for <strong>10 minutes</strong>. If you did not request this entrance, please ignore this transmission.</p>
+      <div style="text-align: center; margin-top: 30px; border-top: 2px solid #1f2833; padding-top: 15px; font-size: 0.8em; color: #666;">
+        Ragnarheim Security System // Sector 9
+      </div>
+    </div>
+  `;
 
   console.log(`🔑 [OTP TRANSMISSION] Generated OTP for ${email}: ${otp}`);
 
+  // Option 1: Use Resend HTTP API (Bypasses Render's port 587/465 outbound blocks completely!)
+  if (process.env.RESEND_API_KEY) {
+    try {
+      const fromEmail = process.env.RESEND_FROM_EMAIL || 'Ragnarheim <onboarding@resend.dev>';
+      const res = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${process.env.RESEND_API_KEY}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          from: fromEmail,
+          to: email,
+          subject: subject,
+          html: html
+        })
+      });
+      const data = await res.json();
+      if (res.ok) {
+        console.log(`✅ [Resend HTTP] Email sent successfully to ${email} (ID: ${data.id})`);
+        return;
+      } else {
+        console.error(`❌ [Resend HTTP] Failed to send via Resend API:`, data);
+      }
+    } catch (err) {
+      console.error(`❌ [Resend HTTP] Network error while calling Resend:`, err.message);
+    }
+  }
+
+  // Option 2: Use Nodemailer SMTP (Works on local dev and paid Render hosting)
   if (transporter) {
     try {
-      await transporter.sendMail(mailOptions);
-      console.log(`✅ Email sent successfully to ${email}`);
-    } catch (err) {
-      console.error(`❌ Failed to send SMTP email to ${email}:`, err.message);
-    }
-  } else {
-    // Ethereal Email fallback
-    try {
-      const testAccount = await nodemailer.createTestAccount();
-      const testTransporter = nodemailer.createTransport({
-        host: 'smtp.ethereal.email',
-        port: 587,
-        secure: false,
-        auth: {
-          user: testAccount.user,
-          pass: testAccount.pass
-        }
-      });
-      const info = await testTransporter.sendMail({
-        from: '"Ragnarheim System" <noreply@ragnarheim.com>',
+      await transporter.sendMail({
+        from: process.env.SMTP_USER,
         to: email,
-        subject: mailOptions.subject,
-        html: mailOptions.html
+        subject: subject,
+        html: html
       });
-      console.log(`📬 [Ethereal Fallback] Message sent: %s`, info.messageId);
-      console.log(`🔗 [Ethereal Fallback] Preview URL: %s`, nodemailer.getTestMessageUrl(info));
-    } catch (fallbackErr) {
-      console.log(`⚠️ Ethereal fallback could not initialize: ${fallbackErr.message}. (OTP is still printed in console above)`);
+      console.log(`✅ [Nodemailer SMTP] Email sent successfully to ${email}`);
+      return;
+    } catch (err) {
+      console.error(`❌ [Nodemailer SMTP] Failed to send SMTP email to ${email}:`, err.message);
     }
+  }
+
+  // Option 3: Ethereal Email fallback
+  try {
+    const testAccount = await nodemailer.createTestAccount();
+    const testTransporter = nodemailer.createTransport({
+      host: 'smtp.ethereal.email',
+      port: 587,
+      secure: false,
+      auth: {
+        user: testAccount.user,
+        pass: testAccount.pass
+      }
+    });
+    const info = await testTransporter.sendMail({
+      from: '"Ragnarheim System" <noreply@ragnarheim.com>',
+      to: email,
+      subject: subject,
+      html: html
+    });
+    console.log(`📬 [Ethereal Fallback] Message sent: %s`, info.messageId);
+    console.log(`🔗 [Ethereal Fallback] Preview URL: %s`, nodemailer.getTestMessageUrl(info));
+  } catch (fallbackErr) {
+    console.log(`⚠️ Ethereal fallback could not initialize: ${fallbackErr.message}. (OTP is still printed in console above)`);
   }
 }
 
